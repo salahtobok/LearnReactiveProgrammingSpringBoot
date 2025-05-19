@@ -3,6 +3,7 @@ package com.webcodein.lrpsp;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -96,6 +97,22 @@ public class ReactiveTutorial {
         return getSampleDataFlux().skip(2);
     }
 
+    private Flux<String> getSampleDataFluxSkippingDelay() {
+        Flux<String> programmingLanguagesFlux = Flux.just("Java", "Scala", "Python", "C", "C++", "C#");
+        return programmingLanguagesFlux.delayElements(Duration.ofSeconds(1));
+    }
+
+
+    private Flux<String> getSampleDataFluxSkippingDelayWithLog() {
+        Flux<String> programmingLanguagesFlux = Flux.just("Java", "Scala", "Python", "C", "C++", "C#");
+        return programmingLanguagesFlux.delayElements(Duration.ofSeconds(1)).log();
+    }
+
+    private Flux<String> getSampleDataFluxSkippingDelayWithLog23() {
+        Flux<String> programmingLanguagesFlux = Flux.just("Java", "Scala", "Python", "C", "C++", "C#").delayElements(Duration.ofSeconds(1));
+        return programmingLanguagesFlux.skip(Duration.ofSeconds(2));
+    }
+
     /**
      * Helper to print a visual separator between test outputs.
      *
@@ -110,7 +127,7 @@ public class ReactiveTutorial {
      *
      * @param args command-line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         ReactiveTutorial tutorial = new ReactiveTutorial();
 
         // Mono Tests
@@ -141,5 +158,17 @@ public class ReactiveTutorial {
 
         printSeparator("Flux - Skip First Two Elements");
         tutorial.getSampleDataFluxSkippingFirstTwo().subscribe(System.out::println);
+
+        printSeparator("Flux - Skip First Two Elements");
+        tutorial.getSampleDataFluxSkippingDelay().subscribe(System.out::println);
+        Thread.sleep(10_000);
+
+        printSeparator("Flux - Skip First Two Elements");
+        tutorial.getSampleDataFluxSkippingDelayWithLog().subscribe(System.out::println);
+        Thread.sleep(10_000);
+
+        printSeparator("Flux - Skip First Two Elements");
+        tutorial.getSampleDataFluxSkippingDelayWithLog23().subscribe(System.out::println);
+        Thread.sleep(10_000);
     }
 }
