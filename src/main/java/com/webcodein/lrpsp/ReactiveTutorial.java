@@ -3,7 +3,7 @@ package com.webcodein.lrpsp;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,115 +14,132 @@ import java.util.List;
 public class ReactiveTutorial {
 
     /**
-     * Returns a Mono that emits a single "Hello World" string.
-     * This is the simplest form of Mono creation using Mono.just().
+     * Creates a Mono that emits a simple greeting message.
      *
-     * @return a Mono emitting "Hello World"
+     * @return Mono emitting "Hello World"
      */
-    private Mono<String> createHelloWorldMono() {
+    private Mono<String> getGreetingMono() {
         return Mono.just("Hello World");
     }
 
     /**
-     * Returns a Mono that emits "Hello World" and logs the signals/events it goes through.
-     * Useful for debugging or understanding the reactive lifecycle.
+     * Creates a Mono that emits a greeting message with signal logging.
      *
-     * @return a logged Mono
+     * @return Logged Mono emitting "Hello World"
      */
-    private Mono<String> createLoggedHelloWorldMono() {
+    private Mono<String> getLoggedGreetingMono() {
         return Mono.just("Hello World").log();
     }
 
     /**
-     * Demonstrates handling nullable values safely using Mono.justOrEmpty().
-     * If the input is null, returns Mono.empty().
+     * Demonstrates safe handling of nullable values using Mono.justOrEmpty.
+     * Will return an empty Mono if value is null.
      *
-     * @return an empty Mono since the input is null
+     * @return Empty Mono
      */
-    private Mono<String> createMonoFromNullableValue() {
+    private Mono<String> getNullableMono() {
         return Mono.justOrEmpty(null);
     }
 
     /**
-     * Returns an explicitly empty Mono that completes without emitting any item.
+     * Explicitly creates an empty Mono.
      *
-     * @return Mono.empty()
+     * @return Empty Mono
      */
-    private Mono<String> createEmptyMono() {
+    private Mono<String> getEmptyMono() {
         return Mono.empty();
     }
 
     /**
-     * Creates a Flux emitting several hardcoded data strings.
-     * This is a static set of data.
+     * Creates a Flux emitting hardcoded data strings.
      *
-     * @return Flux of predefined data strings
+     * @return Flux with data strings
      */
-    private Flux<String> createSampleDataFlux() {
+    private Flux<String> getSampleDataFlux() {
         return Flux.just("DATA 01", "DATA 02", "DATA 03", "DATA 04", "DATA 05");
     }
 
     /**
-     * Creates a Flux from a list of programming languages using Flux.fromIterable().
+     * Creates a Flux from a list of programming languages.
      *
-     * @return Flux emitting programming language names
+     * @return Flux with programming languages
      */
-    private Flux<String> createProgrammingLanguagesFlux() {
-        List<String> programmingLanguages = new ArrayList<>();
-        programmingLanguages.add("Java");
-        programmingLanguages.add("Scala");
-        programmingLanguages.add("Python");
-        programmingLanguages.add("C");
-        programmingLanguages.add("C++");
-        programmingLanguages.add("C#");
-
-        return Flux.fromIterable(programmingLanguages);
+    private Flux<String> getProgrammingLanguagesFlux() {
+        List<String> languages = Arrays.asList("Java", "Scala", "Python", "C", "C++", "C#");
+        return Flux.fromIterable(languages);
     }
 
     /**
-     * Transforms the values from the programming languages Flux to uppercase using map().
+     * Converts the programming language names to uppercase.
      *
      * @return Flux with uppercased language names
      */
-    private Flux<String> createUppercaseProgrammingLanguagesFlux() {
-        return createProgrammingLanguagesFlux().map(String::toUpperCase);
+    private Flux<String> getUppercasedLanguagesFlux() {
+        return getProgrammingLanguagesFlux().map(String::toUpperCase);
     }
 
     /**
-     * Demonstrates flatMap by transforming each string in the Flux to uppercase and
-     * wrapping it in another Flux (simulating async operations).
+     * Uses flatMap to simulate async transformation of strings to uppercase.
      *
      * @return Flattened Flux with uppercase values
      */
-    private Flux<String> createFlatMap() {
-        return createSampleDataFlux().flatMap(s -> Flux.just(s.toUpperCase()));
+    private Flux<String> getFlatMappedDataFlux() {
+        return getSampleDataFlux().flatMap(s -> Flux.just(s.toUpperCase()));
     }
 
     /**
-     * Main entry point to test and demonstrate all the defined reactive methods.
-     * It subscribes to the Monos and Fluxes to trigger their execution and print output.
+     * Skips the first two elements in a sample data Flux.
+     *
+     * @return Flux without the first two elements
+     */
+    private Flux<String> getSampleDataFluxSkippingFirstTwo() {
+        return getSampleDataFlux().skip(2);
+    }
+
+    /**
+     * Helper to print a visual separator between test outputs.
+     *
+     * @param title Label for the section
+     */
+    private static void printSeparator(String title) {
+        System.out.println("\n===== " + title + " =====");
+    }
+
+    /**
+     * Entry point for running and testing the reactive methods.
      *
      * @param args command-line arguments
      */
     public static void main(String[] args) {
         ReactiveTutorial tutorial = new ReactiveTutorial();
 
-        // Mono examples
-        tutorial.createHelloWorldMono(); // Mono created but not subscribed: no execution
-        tutorial.createHelloWorldMono().subscribe(); // Subscribed but no consumer: still no output
-        tutorial.createHelloWorldMono().subscribe(System.out::println); // Prints: Hello World
+        // Mono Tests
+        printSeparator("Mono - Basic Hello World");
+        tutorial.getGreetingMono().subscribe(System.out::println);
 
-        tutorial.createLoggedHelloWorldMono().subscribe(System.out::println); // Prints value with log
+        printSeparator("Mono - Logged Hello World");
+        tutorial.getLoggedGreetingMono().subscribe(System.out::println);
 
-        tutorial.createMonoFromNullableValue().subscribe(System.out::println); // No output (empty)
+        printSeparator("Mono - Nullable Value (null)");
+        tutorial.getNullableMono().subscribe(System.out::println);
 
-        tutorial.createEmptyMono().subscribe(System.out::println); // No output (also empty)
+        printSeparator("Mono - Empty Mono");
+        tutorial.getEmptyMono().subscribe(System.out::println);
 
-        // Flux examples
-        tutorial.createSampleDataFlux().subscribe(System.out::println); // Prints: DATA 01 to DATA 05
-        tutorial.createProgrammingLanguagesFlux().subscribe(System.out::println); // Prints programming languages
-        tutorial.createUppercaseProgrammingLanguagesFlux().subscribe(System.out::println); // Uppercased languages
+        // Flux Tests
+        printSeparator("Flux - Sample Data");
+        tutorial.getSampleDataFlux().subscribe(System.out::println);
 
-        tutorial.createFlatMap().subscribe(System.out::println); // Same as map, but demonstrates flatMap use
+        printSeparator("Flux - Programming Languages");
+        tutorial.getProgrammingLanguagesFlux().subscribe(System.out::println);
+
+        printSeparator("Flux - Uppercased Languages");
+        tutorial.getUppercasedLanguagesFlux().subscribe(System.out::println);
+
+        printSeparator("Flux - FlatMapped Uppercase Data");
+        tutorial.getFlatMappedDataFlux().subscribe(System.out::println);
+
+        printSeparator("Flux - Skip First Two Elements");
+        tutorial.getSampleDataFluxSkippingFirstTwo().subscribe(System.out::println);
     }
 }
