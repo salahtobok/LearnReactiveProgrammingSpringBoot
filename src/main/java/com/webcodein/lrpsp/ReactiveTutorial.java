@@ -18,7 +18,7 @@ public class ReactiveTutorial {
      *
      * @return Mono emitting "Hello World"
      */
-    private Mono<String> monoWithSimpleGreeting() {
+    public Mono<String> monoWithSimpleGreeting() {
         return Mono.just("Hello World");
     }
 
@@ -27,7 +27,7 @@ public class ReactiveTutorial {
      *
      * @return Logged Mono emitting "Hello World"
      */
-    private Mono<String> monoWithLoggedGreeting() {
+    public Mono<String> monoWithLoggedGreeting() {
         return Mono.just("Hello World").log();
     }
 
@@ -36,7 +36,7 @@ public class ReactiveTutorial {
      *
      * @return Empty Mono
      */
-    private Mono<String> monoFromNullableValue() {
+    public Mono<String> monoFromNullableValue() {
         return Mono.justOrEmpty(null);
     }
 
@@ -45,7 +45,7 @@ public class ReactiveTutorial {
      *
      * @return Empty Mono
      */
-    private Mono<String> monoEmptyExplicit() {
+    public Mono<String> monoEmptyExplicit() {
         return Mono.empty();
     }
 
@@ -54,7 +54,7 @@ public class ReactiveTutorial {
      *
      * @return Flux emitting sample strings
      */
-    private Flux<String> fluxFromSampleData() {
+    public Flux<String> fluxFromSampleData() {
         return Flux.just("DATA 01", "DATA 02", "DATA 03", "DATA 04", "DATA 05");
     }
 
@@ -63,7 +63,7 @@ public class ReactiveTutorial {
      *
      * @return Flux emitting programming language names
      */
-    private Flux<String> fluxFromProgrammingLanguages() {
+    public Flux<String> fluxFromProgrammingLanguages() {
         List<String> languages = Arrays.asList("Java", "Scala", "Python", "C", "C++", "C#");
         return Flux.fromIterable(languages);
     }
@@ -73,7 +73,7 @@ public class ReactiveTutorial {
      *
      * @return Flux emitting uppercased language names
      */
-    private Flux<String> fluxWithUppercaseLanguages() {
+    public Flux<String> fluxWithUppercaseLanguages() {
         return fluxFromProgrammingLanguages().map(String::toUpperCase);
     }
 
@@ -82,7 +82,7 @@ public class ReactiveTutorial {
      *
      * @return Flux emitting uppercased sample data
      */
-    private Flux<String> fluxWithFlatMappedUppercaseData() {
+    public Flux<String> fluxWithFlatMappedUppercaseData() {
         return fluxFromSampleData().flatMap(s -> Flux.just(s.toUpperCase()));
     }
 
@@ -91,7 +91,7 @@ public class ReactiveTutorial {
      *
      * @return Flux emitting elements after skipping first two
      */
-    private Flux<String> fluxWithSkippedSampleData() {
+    public Flux<String> fluxWithSkippedSampleData() {
         return fluxFromSampleData().skip(2);
     }
 
@@ -100,7 +100,7 @@ public class ReactiveTutorial {
      *
      * @return Delayed Flux emitting programming languages
      */
-    private Flux<String> fluxWithDelayedProgrammingLanguages() {
+    public Flux<String> fluxWithDelayedProgrammingLanguages() {
         return Flux.just("Java", "Scala", "Python", "C", "C++", "C#")
                 .delayElements(Duration.ofSeconds(1));
     }
@@ -110,7 +110,7 @@ public class ReactiveTutorial {
      *
      * @return Delayed and logged Flux
      */
-    private Flux<String> fluxWithDelayedLoggedLanguages() {
+    public Flux<String> fluxWithDelayedLoggedLanguages() {
         return Flux.just("Java", "Scala", "Python", "C", "C++", "C#")
                 .delayElements(Duration.ofSeconds(1))
                 .log();
@@ -121,7 +121,7 @@ public class ReactiveTutorial {
      *
      * @return Flux after skipping emissions for 2 seconds
      */
-    private Flux<String> fluxSkippingElementsAfterDelay() {
+    public Flux<String> fluxSkippingElementsAfterDelay() {
         return Flux.just("Java", "Scala", "Python", "C", "C++", "C#")
                 .delayElements(Duration.ofSeconds(1))
                 .skip(Duration.ofSeconds(2));
@@ -132,7 +132,7 @@ public class ReactiveTutorial {
      *
      * @return Flux emitting integers starting from the first divisible by 5
      */
-    private Flux<Integer> fluxSkipUntilDivisibleByFive() {
+    public Flux<Integer> fluxSkipUntilDivisibleByFive() {
         Flux<Integer> integerFlux = Flux.range(1, 20);
         return integerFlux.skipUntil(integer -> integer % 5 == 0);
     }
@@ -142,7 +142,7 @@ public class ReactiveTutorial {
      *
      * @return Concatenated Flux of two integer ranges
      */
-    private Flux<Integer> fluxWithConcatenatedRanges() {
+    public Flux<Integer> fluxWithConcatenatedRanges() {
         Flux<Integer> integerFlux1 = Flux.range(1, 20);
         Flux<Integer> integerFlux2 = Flux.range(40, 100);
         return integerFlux1.concatWith(integerFlux2);
@@ -153,7 +153,7 @@ public class ReactiveTutorial {
      *
      * @param title Section title to print
      */
-    private static void printSeparator(String title) {
+    public static void printSeparator(String title) {
         System.out.println("\n===== " + title + " =====");
     }
 
