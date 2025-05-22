@@ -86,15 +86,16 @@ public class ReactiveTutorial {
 
         printSeparator("Mono: Collected List from Delayed Flux");
         tutorial.collectToListWithDelay().subscribe(System.out::println);
-        Thread.sleep(10_000);
+        Thread.sleep(20_000);
 
         printSeparator("Mono: Collected List from Immediate Flux");
-        tutorial.collectToListImmediately().block();
-        Thread.sleep(10_000);
+        List<Integer> integerList = tutorial.collectToListImmediately().block();
+        System.out.println("integerList = " + integerList);
+        Thread.sleep(20_000);
 
         printSeparator("Flux: Buffered List");
         tutorial.bufferedIntegerFlux().subscribe(System.out::println);
-        Thread.sleep(10_000);
+        Thread.sleep(20_000);
     }
 
     // =====================
@@ -241,7 +242,7 @@ public class ReactiveTutorial {
      */
     public Mono<List<Integer>> collectToListWithDelay() {
         return Flux.range(1, 20)
-                .delayElements(Duration.ofMillis(500))
+                .delayElements(Duration.ofMillis(1))
                 .collectList();
     }
 
