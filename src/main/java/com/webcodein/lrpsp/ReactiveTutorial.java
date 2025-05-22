@@ -145,7 +145,7 @@ public class ReactiveTutorial {
     public Flux<Integer> fluxWithConcatenatedRanges() {
         Flux<Integer> integerFlux1 = Flux.range(1, 20);
         Flux<Integer> integerFlux2 = Flux.range(40, 100);
-        return integerFlux1.concatWith(integerFlux2);
+        return Flux.concat(integerFlux1, integerFlux2);
     }
 
     /**
