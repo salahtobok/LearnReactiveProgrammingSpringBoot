@@ -148,7 +148,7 @@ You can add the following dependency to your `pom.xml`:
 
 ## 🙌 Author
 
-Created by [Your Name Here] – Demonstrating reactive programming with Reactor.
+Created by TOBOK SALAH EDDINE – Demonstrating reactive programming with Reactor.
 
 ---
 
