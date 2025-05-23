@@ -7,256 +7,289 @@ import reactor.util.function.Tuple2;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Demonstrates various usages of Project Reactor's Mono and Flux
- * for reactive programming with detailed examples.
+ * ReactiveTutorial demonstrates the use of Mono and Flux in Project Reactor
+ * with various operations including transformation, filtering, buffering, delaying,
+ * merging, zipping, and collecting.
  */
 public class ReactiveTutorial {
 
     /**
-     * Prints a formatted separator with a title for readability in console output.
-     *
-     * @param title the title to display within the separator
+     * Demonstrates how to collect a Flux of integers into a map where key = integer and value = square of integer.
      */
-    public static void printSeparator(String title) {
-        System.out.println("\n===== " + title + " =====");
+    public Mono<Map<Integer, Integer>> collectIntegersToSquareMap() {
+        Flux<Integer> numbers = Flux.range(1, 20);
+        return numbers.collectMap(i -> i, i -> i * i);
     }
 
     /**
-     * Entry point for running all reactive examples.
+     * Prints a formatted section separator with a provided test title.
+     *
+     * @param title the title to display between test sections
      */
+    public static void printSeparator(String title) {
+        System.out.println("\n===== [ " + title + " ] =====");
+    }
+
+    // MONO EXAMPLES
+
     public static void main(String[] args) throws InterruptedException {
         ReactiveTutorial tutorial = new ReactiveTutorial();
 
-        // MONO EXAMPLES
-        printSeparator("Mono: Basic Hello World");
-        tutorial.basicHelloWorldMono().subscribe(System.out::println);
+        printSeparator("Mono: Emit Static String");
+        tutorial.emitHelloWorldMono().subscribe(System.out::println);
 
-        printSeparator("Mono: Logged Hello World");
-        tutorial.loggedHelloWorldMono().subscribe(System.out::println);
+        printSeparator("Mono: Emit Logged Static String");
+        tutorial.emitLoggedHelloWorldMono().subscribe(System.out::println);
 
-        printSeparator("Mono: Nullable Value Handling");
-        tutorial.nullableToMonoExample().subscribe(System.out::println);
+        printSeparator("Mono: Emit From Nullable (Null Value)");
+        tutorial.emitMonoFromNull().subscribe(System.out::println);
 
-        printSeparator("Mono: Explicitly Empty");
-        tutorial.explicitEmptyMono().subscribe(System.out::println);
+        printSeparator("Mono: Emit Explicit Empty Mono");
+        tutorial.emitEmptyMono().subscribe(System.out::println);
 
         // FLUX EXAMPLES
-        printSeparator("Flux: Sample Data");
-        tutorial.sampleDataFlux().subscribe(System.out::println);
+        printSeparator("Flux: Emit Sample Data List");
+        tutorial.emitSampleData().subscribe(System.out::println);
 
-        printSeparator("Flux: Programming Languages");
-        tutorial.programmingLanguagesFlux().subscribe(System.out::println);
+        printSeparator("Flux: Emit Programming Language List");
+        tutorial.emitProgrammingLanguages().subscribe(System.out::println);
 
-        printSeparator("Flux: Uppercased Programming Languages");
-        tutorial.uppercaseProgrammingLanguagesFlux().subscribe(System.out::println);
+        printSeparator("Flux: Convert Languages to Uppercase");
+        tutorial.emitUppercaseLanguages().subscribe(System.out::println);
 
-        printSeparator("Flux: FlatMapped Uppercase Data");
-        tutorial.flatMappedUppercaseSampleDataFlux().subscribe(System.out::println);
+        printSeparator("Flux: Convert Sample Data to Uppercase using FlatMap");
+        tutorial.emitSampleDataUppercaseFlatMap().subscribe(System.out::println);
 
-        printSeparator("Flux: Skipping First Two Elements");
-        tutorial.skipFirstTwoSampleDataFlux().subscribe(System.out::println);
+        printSeparator("Flux: Skip First Two Items in Sample Data");
+        tutorial.skipFirstTwoSampleItems().subscribe(System.out::println);
 
-        printSeparator("Flux: Delayed Emission");
-        tutorial.delayedProgrammingLanguagesFlux().subscribe(System.out::println);
+        printSeparator("Flux: Emit Languages with 1-Second Delay");
+        tutorial.emitLanguagesWithDelay().subscribe(System.out::println);
         Thread.sleep(10_000);
 
-        printSeparator("Flux: Delayed Emission With Logging");
-        tutorial.loggedDelayedProgrammingLanguagesFlux().subscribe(System.out::println);
+        printSeparator("Flux: Log Languages with Delay");
+        tutorial.logLanguagesWithDelay().subscribe(System.out::println);
         Thread.sleep(10_000);
 
-        printSeparator("Flux: Skip Elements After Delay");
-        tutorial.skipAfterDelayProgrammingLanguagesFlux().subscribe(System.out::println);
+        printSeparator("Flux: Skip Languages Emitted in First 2 Seconds");
+        tutorial.skipLanguagesInFirstTwoSeconds().subscribe(System.out::println);
         Thread.sleep(10_000);
 
-        // ADDITIONAL EXAMPLES
-        printSeparator("Flux: Skip Until Divisible by 5");
-        tutorial.skipUntilDivisibleByFiveFlux().subscribe(System.out::println);
+        // ADVANCED FLUX EXAMPLES
+        printSeparator("Flux: Skip Until Number Divisible by 5");
+        tutorial.skipUntilDivisibleByFive().subscribe(System.out::println);
 
-        printSeparator("Flux: Concatenated Integer Ranges");
-        tutorial.concatenateIntegerRangesFlux().subscribe(System.out::println);
+        printSeparator("Flux: Concatenate Two Integer Ranges");
+        tutorial.concatIntegerRanges().subscribe(System.out::println);
 
-        printSeparator("Flux: Merged Integer Ranges");
-        tutorial.mergeIntegerRangesFlux().subscribe(System.out::println);
+        printSeparator("Flux: Merge Two Integer Ranges");
+        tutorial.mergeIntegerRanges().subscribe(System.out::println);
 
-        printSeparator("Flux: Zipped Integer Ranges");
-        tutorial.zipDelayedIntegerRangesFlux().subscribe(System.out::println);
+        printSeparator("Flux: Zip Two Delayed Integer Ranges");
+        tutorial.zipDelayedIntegerRanges().subscribe(System.out::println);
         Thread.sleep(20_000);
 
-        printSeparator("Mono: Collected List from Delayed Flux");
-        tutorial.collectToListWithDelay().subscribe(System.out::println);
+        printSeparator("Mono: Collect Delayed Integer Range to List");
+        tutorial.collectDelayedRangeToList().subscribe(System.out::println);
         Thread.sleep(20_000);
 
-        printSeparator("Mono: Collected List from Immediate Flux");
-        List<Integer> integerList = tutorial.collectToListImmediately().block();
-        System.out.println("integerList = " + integerList);
+        printSeparator("Mono: Collect Immediate Integer Range to List");
+        List<Integer> list = tutorial.collectImmediateRangeToList().block();
+        System.out.println(list);
         Thread.sleep(20_000);
 
-        printSeparator("Flux: Buffered List");
-        tutorial.bufferedIntegerFlux().subscribe(System.out::println);
+        printSeparator("Flux: Buffer Entire Range");
+        tutorial.bufferAllItems().subscribe(System.out::println);
+        Thread.sleep(20_000);
+
+        printSeparator("Flux: Buffer Items in Groups of 3");
+        tutorial.bufferItemsInChunksOfThree().subscribe(System.out::println);
+        Thread.sleep(20_000);
+
+        printSeparator("Flux: Delay Buffer of 3 Items Each");
+        tutorial.bufferWithDelayPerChunk().subscribe(System.out::println);
+        Thread.sleep(20_000);
+
+        printSeparator("Flux: Buffer Items Every Second");
+        tutorial.bufferItemsEverySecond().subscribe(System.out::println);
+        Thread.sleep(20_000);
+
+        printSeparator("Flux: Buffer with 4-Second Time Window");
+        tutorial.bufferWithFourSecondWindow().subscribe(System.out::println);
+        Thread.sleep(25_000);
+
+        printSeparator("Mono: Collect Integer Square Map");
+        tutorial.collectIntegersToSquareMap().subscribe(System.out::println);
         Thread.sleep(20_000);
     }
 
-    // =====================
     // MONO EXAMPLES
-    // =====================
 
     /**
-     * Returns a Mono with a simple greeting.
+     * Emits a Mono containing "Hello World".
      */
-    public Mono<String> basicHelloWorldMono() {
+    public Mono<String> emitHelloWorldMono() {
         return Mono.just("Hello World");
     }
 
     /**
-     * Returns a logged Mono for observing its lifecycle.
+     * Emits a Mono containing "Hello World" with logging.
      */
-    public Mono<String> loggedHelloWorldMono() {
+    public Mono<String> emitLoggedHelloWorldMono() {
         return Mono.just("Hello World").log();
     }
 
     /**
-     * Returns a Mono from a nullable value (null in this case).
+     * Emits a Mono from a nullable value (null).
      */
-    public Mono<String> nullableToMonoExample() {
+    public Mono<String> emitMonoFromNull() {
         return Mono.justOrEmpty(null);
     }
 
     /**
-     * Returns an explicitly empty Mono.
+     * Emits an explicitly empty Mono.
      */
-    public Mono<String> explicitEmptyMono() {
+    public Mono<String> emitEmptyMono() {
         return Mono.empty();
     }
 
-    // =====================
     // FLUX EXAMPLES
-    // =====================
 
     /**
-     * Returns a Flux emitting static sample string data.
+     * Emits a predefined list of sample data strings.
      */
-    public Flux<String> sampleDataFlux() {
+    public Flux<String> emitSampleData() {
         return Flux.just("DATA 01", "DATA 02", "DATA 03", "DATA 04", "DATA 05");
     }
 
     /**
-     * Returns a Flux emitting a list of programming language names.
+     * Emits a list of common programming languages.
      */
-    public Flux<String> programmingLanguagesFlux() {
-        List<String> languages = Arrays.asList("Java", "Scala", "Python", "C", "C++", "C#");
-        return Flux.fromIterable(languages);
+    public Flux<String> emitProgrammingLanguages() {
+        return Flux.fromIterable(Arrays.asList("Java", "Scala", "Python", "C", "C++", "C#"));
     }
 
     /**
-     * Transforms the programming language names to uppercase.
+     * Converts each programming language name to uppercase.
      */
-    public Flux<String> uppercaseProgrammingLanguagesFlux() {
-        return programmingLanguagesFlux().map(String::toUpperCase);
+    public Flux<String> emitUppercaseLanguages() {
+        return emitProgrammingLanguages().map(String::toUpperCase);
     }
 
     /**
-     * Flat maps each sample data item to its uppercase variant.
+     * Uses flatMap to convert sample data items to uppercase.
      */
-    public Flux<String> flatMappedUppercaseSampleDataFlux() {
-        return sampleDataFlux().flatMap(s -> Flux.just(s.toUpperCase()));
+    public Flux<String> emitSampleDataUppercaseFlatMap() {
+        return emitSampleData().flatMap(item -> Flux.just(item.toUpperCase()));
     }
 
     /**
-     * Skips the first two elements in the sample data stream.
+     * Skips the first two sample data items.
      */
-    public Flux<String> skipFirstTwoSampleDataFlux() {
-        return sampleDataFlux().skip(2);
+    public Flux<String> skipFirstTwoSampleItems() {
+        return emitSampleData().skip(2);
     }
 
     /**
-     * Delays the emission of each programming language by 1 second.
+     * Delays each language item by 1 second.
      */
-    public Flux<String> delayedProgrammingLanguagesFlux() {
-        return programmingLanguagesFlux().delayElements(Duration.ofSeconds(1));
+    public Flux<String> emitLanguagesWithDelay() {
+        return emitProgrammingLanguages().delayElements(Duration.ofSeconds(1));
     }
 
     /**
-     * Logs each programming language emitted after delay.
+     * Delays and logs each programming language emission.
      */
-    public Flux<String> loggedDelayedProgrammingLanguagesFlux() {
-        return programmingLanguagesFlux()
-                .delayElements(Duration.ofSeconds(1))
-                .log();
+    public Flux<String> logLanguagesWithDelay() {
+        return emitProgrammingLanguages().delayElements(Duration.ofSeconds(1)).log();
     }
 
     /**
-     * Skips any items emitted within the first 2 seconds.
+     * Skips languages emitted within the first 2 seconds.
      */
-    public Flux<String> skipAfterDelayProgrammingLanguagesFlux() {
-        return programmingLanguagesFlux()
-                .delayElements(Duration.ofSeconds(1))
-                .skip(Duration.ofSeconds(2));
+    public Flux<String> skipLanguagesInFirstTwoSeconds() {
+        return emitProgrammingLanguages().delayElements(Duration.ofSeconds(1)).skip(Duration.ofSeconds(2));
     }
 
-    // =====================
-    // EXTRA EXAMPLES
-    // =====================
-
     /**
-     * Emits a range of integers, skipping values until the first divisible by 5.
+     * Skips integers until an integer divisible by 5 is encountered.
      */
-    public Flux<Integer> skipUntilDivisibleByFiveFlux() {
+    public Flux<Integer> skipUntilDivisibleByFive() {
         return Flux.range(1, 20).skipUntil(i -> i % 5 == 0);
     }
 
     /**
-     * Concatenates two ranges of integers into a single Flux.
+     * Concatenates two Flux ranges: 1–20 and 10–100.
      */
-    public Flux<Integer> concatenateIntegerRangesFlux() {
-        Flux<Integer> range1 = Flux.range(1, 20);
-        Flux<Integer> range2 = Flux.range(10, 100);
-        return Flux.concat(range1, range2);
+    public Flux<Integer> concatIntegerRanges() {
+        return Flux.concat(Flux.range(1, 20), Flux.range(10, 100));
     }
 
     /**
-     * Merges two ranges of integers into a single Flux (interleaved).
+     * Merges two Flux ranges: 1–20 and 10–100.
      */
-    public Flux<Integer> mergeIntegerRangesFlux() {
-        Flux<Integer> range1 = Flux.range(1, 20);
-        Flux<Integer> range2 = Flux.range(10, 100);
-        return Flux.merge(range1, range2);
+    public Flux<Integer> mergeIntegerRanges() {
+        return Flux.merge(Flux.range(1, 20), Flux.range(10, 100));
     }
 
     /**
-     * Zips two delayed integer ranges and emits paired tuples.
+     * Zips two delayed ranges into a Flux of Tuples.
      */
-    public Flux<Tuple2<Integer, Integer>> zipDelayedIntegerRangesFlux() {
-        Flux<Integer> range1 = Flux.range(1, 20).delayElements(Duration.ofMillis(500));
-        Flux<Integer> range2 = Flux.range(10, 100).delayElements(Duration.ofMillis(500));
-        return Flux.zip(range1, range2);
-    }
-
-    // =====================
-    // COLLECT / BUFFER EXAMPLES
-    // =====================
-
-    /**
-     * Collects elements into a list after applying a delay.
-     */
-    public Mono<List<Integer>> collectToListWithDelay() {
-        return Flux.range(1, 20)
-                .delayElements(Duration.ofMillis(1))
-                .collectList();
+    public Flux<Tuple2<Integer, Integer>> zipDelayedIntegerRanges() {
+        Flux<Integer> first = Flux.range(1, 20).delayElements(Duration.ofMillis(500));
+        Flux<Integer> second = Flux.range(10, 100).delayElements(Duration.ofMillis(500));
+        return Flux.zip(first, second);
     }
 
     /**
-     * Collects all elements into a list immediately.
+     * Collects a delayed Flux range to a list.
      */
-    public Mono<List<Integer>> collectToListImmediately() {
+    public Mono<List<Integer>> collectDelayedRangeToList() {
+        return Flux.range(1, 20).delayElements(Duration.ofMillis(1)).collectList();
+    }
+
+    /**
+     * Collects a Flux range without delay to a list.
+     */
+    public Mono<List<Integer>> collectImmediateRangeToList() {
         return Flux.range(1, 20).collectList();
     }
 
     /**
-     * Buffers the emitted integers into batches (lists).
+     * Buffers the entire Flux into a single list.
      */
-    public Flux<List<Integer>> bufferedIntegerFlux() {
+    public Flux<List<Integer>> bufferAllItems() {
         return Flux.range(1, 20).buffer();
+    }
+
+    /**
+     * Buffers integers into chunks of 3.
+     */
+    public Flux<List<Integer>> bufferItemsInChunksOfThree() {
+        return Flux.range(1, 20).buffer(3);
+    }
+
+    /**
+     * Buffers items in groups of 3 and delays each chunk by 1 second.
+     */
+    public Flux<List<Integer>> bufferWithDelayPerChunk() {
+        return Flux.range(1, 20).buffer(3).delayElements(Duration.ofSeconds(1));
+    }
+
+    /**
+     * Buffers items emitted every 1 second.
+     */
+    public Flux<List<Integer>> bufferItemsEverySecond() {
+        return Flux.range(1, 20).buffer(Duration.ofSeconds(1));
+    }
+
+    /**
+     * Buffers items over a 4-second window while introducing a 1-second delay per item.
+     */
+    public Flux<List<Integer>> bufferWithFourSecondWindow() {
+        return Flux.range(1, 20).delayElements(Duration.ofSeconds(1)).buffer(Duration.ofSeconds(4));
     }
 }
