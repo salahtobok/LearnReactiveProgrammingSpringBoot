@@ -2,13 +2,14 @@ package com.webcodein.lrpsp;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.function.Tuple2;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.Map;
 
-public class ReactiveTutorialTest {
+class ReactiveTutorialTest {
 
     private ReactiveTutorial tutorial;
 
@@ -18,102 +19,97 @@ public class ReactiveTutorialTest {
     }
 
     @Test
-    void testMonoWithSimpleGreeting() {
-        Mono<String> mono = tutorial.monoWithSimpleGreeting();
-        StepVerifier.create(mono)
+    void testCreateHelloWorldMono() {
+        StepVerifier.create(tutorial.createHelloWorldMono())
                 .expectNext("Hello World")
                 .verifyComplete();
     }
 
     @Test
-    void testMonoWithLoggedGreeting() {
-        StepVerifier.create(tutorial.monoWithLoggedGreeting())
-                .expectNext("Hello World")
+    void testCreateNullMono() {
+        StepVerifier.create(tutorial.createNullMono())
                 .verifyComplete();
     }
 
     @Test
-    void testMonoFromNullableValue() {
-        StepVerifier.create(tutorial.monoFromNullableValue())
-                .verifyComplete(); // No element expected
+    void testCreateEmptyMono() {
+        StepVerifier.create(tutorial.createEmptyMono())
+                .verifyComplete();
     }
 
     @Test
-    void testMonoEmptyExplicit() {
-        StepVerifier.create(tutorial.monoEmptyExplicit())
-                .verifyComplete(); // No element expected
-    }
-
-    @Test
-    void testFluxFromSampleData() {
-        StepVerifier.create(tutorial.fluxFromSampleData())
+    void testGetSampleStringFlux() {
+        StepVerifier.create(tutorial.getSampleStringFlux())
                 .expectNext("DATA 01", "DATA 02", "DATA 03", "DATA 04", "DATA 05")
                 .verifyComplete();
     }
 
     @Test
-    void testFluxFromProgrammingLanguages() {
-        StepVerifier.create(tutorial.fluxFromProgrammingLanguages())
-                .expectNext("Java", "Scala", "Python", "C", "C++", "C#")
-                .verifyComplete();
-    }
-
-    @Test
-    void testFluxWithUppercaseLanguages() {
-        StepVerifier.create(tutorial.fluxWithUppercaseLanguages())
+    void testUppercaseProgrammingLanguages() {
+        StepVerifier.create(tutorial.uppercaseProgrammingLanguages())
                 .expectNext("JAVA", "SCALA", "PYTHON", "C", "C++", "C#")
                 .verifyComplete();
     }
 
     @Test
-    void testFluxWithFlatMappedUppercaseData() {
-        StepVerifier.create(tutorial.fluxWithFlatMappedUppercaseData())
-                .expectNext("DATA 01", "DATA 02", "DATA 03", "DATA 04", "DATA 05")
-                .verifyComplete();
-    }
-
-    @Test
-    void testFluxWithSkippedSampleData() {
-        StepVerifier.create(tutorial.fluxWithSkippedSampleData())
+    void testSkipFirstTwoSampleStrings() {
+        StepVerifier.create(tutorial.skipFirstTwoSampleStrings())
                 .expectNext("DATA 03", "DATA 04", "DATA 05")
                 .verifyComplete();
     }
 
     @Test
-    void testFluxWithDelayedProgrammingLanguages() {
-        StepVerifier.withVirtualTime(() -> tutorial.fluxWithDelayedProgrammingLanguages())
-                .thenAwait(Duration.ofSeconds(6)) // 6 elements with 1s delay each
-                .expectNext("Java", "Scala", "Python", "C", "C++", "C#")
+    void testConcatIntegerRanges() {
+        StepVerifier.create(tutorial.concatIntegerRanges())
+                .expectNextCount(119) // 20 + 99
                 .verifyComplete();
     }
 
     @Test
-    void testFluxWithDelayedLoggedLanguages() {
-        StepVerifier.withVirtualTime(() -> tutorial.fluxWithDelayedLoggedLanguages())
-                .thenAwait(Duration.ofSeconds(6))
-                .expectNext("Java", "Scala", "Python", "C", "C++", "C#")
+    void testMergeIntegerRanges() {
+        StepVerifier.create(tutorial.mergeIntegerRanges())
+                .expectNextCount(119)
                 .verifyComplete();
     }
 
     @Test
-    void testFluxSkippingElementsAfterDelay() {
-        StepVerifier.withVirtualTime(() -> tutorial.fluxSkippingElementsAfterDelay())
-                .thenAwait(Duration.ofSeconds(7))
-                .expectNext("Python", "C", "C++", "C#")
+    void testZipTwoDelayedRanges() {
+        StepVerifier.withVirtualTime(() -> tutorial.zipTwoDelayedRanges())
+                .thenAwait(Duration.ofSeconds(10)) // Adjust based on zip behavior
+                .expectNextCount(20)
                 .verifyComplete();
     }
 
     @Test
-    void testFluxSkipUntilDivisibleByFive() {
-        StepVerifier.create(tutorial.fluxSkipUntilDivisibleByFive())
-                .expectNext(5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
+    void testCreateMapOfSquares() {
+        StepVerifier.create(tutorial.createMapOfSquares())
+                .assertNext(map -> {
+                    for (int i = 1; i <= 19; i++) {
+                        assert map.get(i) == i * i;
+                    }
+                })
                 .verifyComplete();
     }
 
     @Test
-    void testFluxWithConcatenatedRanges() {
-        StepVerifier.create(tutorial.fluxWithConcatenatedRanges())
-                .expectNextCount(20 + 100) // 20 from 1–20, 100 from 40–139 (inclusive)
+    void testErrorHandlingWithOnErrorReturn() {
+        StepVerifier.create(tutorial.errorHandlingWithOnErrorReturn())
+                .expectNext(1, 2, 3, 4, -1)
                 .verifyComplete();
+    }
+
+    @Test
+    void testErrorHandlingWithFallbackMono() {
+        StepVerifier.create(tutorial.errorHandlingWithFallbackMono())
+                .expectNext(1, 2, 3, 4, 5)
+                .verifyComplete();
+    }
+
+    @Test
+    void testErrorHandlingWithMappedError() {
+        StepVerifier.create(tutorial.errorHandlingWithMappedError())
+                .expectNext(1, 2, 3, 4)
+                .expectError(UnsupportedOperationException.class)
+                .verify();
     }
 }
