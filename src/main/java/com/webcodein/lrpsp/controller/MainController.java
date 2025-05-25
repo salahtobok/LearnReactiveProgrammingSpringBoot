@@ -1,4 +1,4 @@
-package com.webcodein.lrpsp;
+package com.webcodein.lrpsp.controller;
 
 
 import org.springframework.stereotype.Controller;

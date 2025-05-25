@@ -1,4 +1,4 @@
-package com.webcodein.lrpsp;
+package com.webcodein.lrpsp.config;
 
 
 import com.mongodb.reactivestreams.client.MongoClient;
