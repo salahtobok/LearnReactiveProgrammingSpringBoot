@@ -4,9 +4,9 @@ package com.webcodein.lrpsp.controller;
 import com.webcodein.lrpsp.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -22,8 +22,22 @@ public class DataController {
     @PostMapping("/customer/create")
     public Mono<Customer> createCustomer(@RequestBody Customer customer){
         //Save it to database
-        Mono<Customer> customerMono = reactiveMongoTemplate.save(customer);
+        Mono<Customer> savedCustomer = reactiveMongoTemplate.save(customer);
+        return savedCustomer;
+    }
 
-        return customerMono;
+
+    @GetMapping("/customer/find-by-id")
+    public Mono<Customer> findCustomerById(@RequestParam("customerId") String customerId){
+        return getCustomerById(customerId)
+                //.log();
+                .log();
+    }
+
+
+    private Mono<Customer> getCustomerById(String customerId){
+        Criteria criteria = Criteria.where("id").is(customerId);
+        Query query = new Query(criteria);
+        return reactiveMongoTemplate.findOne(query,Customer.class);
     }
 }

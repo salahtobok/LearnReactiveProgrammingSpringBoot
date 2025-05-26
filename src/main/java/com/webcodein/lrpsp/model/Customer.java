@@ -47,4 +47,14 @@ public class Customer {
     public void setJob(String job) {
         this.job = job;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", job='" + job + '\'' +
+                '}';
+    }
+
 }
