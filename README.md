@@ -1,138 +1,141 @@
-# ReactiveTutorial
+Here's a `README.md` file for both `BackPressureTutorial` and `ReactiveTutorial`, combined in a single block:
 
-This Java program showcases various features of [Project Reactor](https://projectreactor.io/) using `Mono` and `Flux`. It demonstrates key reactive programming techniques including transformations, buffering, merging, zipping, logging, and error handling.
+```markdown
+# Project Reactor Tutorial
+
+This repository demonstrates reactive programming concepts using [Project Reactor](https://projectreactor.io/). It contains two core classes:
+
+- `ReactiveTutorial`: Showcases various `Mono` and `Flux` operators.
+- `BackPressureTutorial`: Demonstrates handling backpressure in reactive streams.
 
 ---
 
-## 🚀 Getting Started
+## 📘 Class: `ReactiveTutorial`
 
-Ensure your project has the following dependencies in your `pom.xml` (if using Maven):
+This class provides a comprehensive demonstration of common `Mono` and `Flux` operations such as:
 
-```xml
-<dependency>
-    <groupId>io.projectreactor</groupId>
-    <artifactId>reactor-core</artifactId>
-    <version>3.6.0</version>
-</dependency>
+### Mono Examples
+
+- `createHelloWorldMono()`  
+  Emits a simple "Hello World" string.
+
+- `createHelloWorldMonoWithLogging()`  
+  Same as above, but with `.log()` for signal tracing.
+
+- `createNullMono()`  
+  Emits an empty Mono from a `null` value.
+
+- `createEmptyMono()`  
+  Emits a deliberately empty Mono.
+
+- `collectImmediateIntegersAsList()` / `collectDelayedIntegersAsList()`  
+  Collects emitted values into a list.
+
+- `createMapOfSquares()`  
+  Emits a `Map<Integer, Integer>` of numbers and their squares.
+
+### Flux Examples
+
+- `getSampleStringFlux()`, `getProgrammingLanguagesFlux()`  
+  Basic Flux streams emitting strings.
+
+- Transformation:
+  - `uppercaseProgrammingLanguages()`
+  - `uppercaseSampleStringsUsingFlatMap()`
+
+- Filtering:
+  - `skipFirstTwoSampleStrings()`
+  - `skipUntilDivisibleByFive()`
+
+- Time-based operations:
+  - `delayLanguagesByOneSecond()`
+  - `skipItemsInFirstTwoSeconds()`
+
+- Merging and Zipping:
+  - `concatIntegerRanges()`
+  - `mergeIntegerRanges()`
+  - `zipTwoDelayedRanges()`
+
+- Buffering:
+  - `bufferFullIntegerRange()`
+  - `bufferEveryThreeItems()`
+  - `bufferThreeItemsWithDelay()`
+  - `bufferItemsEverySecond()`
+  - `bufferItemsWithFourSecondDelay()`
+
+- Logging and Signals:
+  - `logEachSignal()`
+  - `logSignalTypeAndCompletion()`
+  - `logOnlyOnComplete()`
+  - `logValuesWithDoOnNext()`
+  - `logOnSubscribe()`
+  - `logOnCancel()`
+
+- Error Handling:
+  - `errorWithoutRecovery()`
+  - `errorHandlingWithOnErrorContinue()`
+  - `errorHandlingWithOnErrorReturn()`
+  - `errorHandlingWithFallbackFlux()`
+  - `errorHandlingWithFallbackMono()`
+  - `errorHandlingWithMappedError()`
+
+---
+
+## ⚙️ Class: `BackPressureTutorial`
+
+This class demonstrates how to handle situations where the data publisher overwhelms the subscriber:
+
+### Backpressure Strategies
+
+- `controlledRateEmitter()`  
+  Emits items every 100 ms — simulates a well-behaved publisher.
+
+- `fastEmitterWithSlowProcessing()`  
+  Emits items every 1 ms, but processing takes 100 ms — simulates overflow.
+
+- `dropOverflowedItemsEmitter()`  
+  Uses `onBackpressureDrop()` to drop unprocessed items.
+
+- `bufferOverflowedItemsEmitter()`  
+  Uses `onBackpressureBuffer(50)` to buffer up to 50 items.
+
+- `bufferWithDropLatestStrategyEmitter()`  
+  Uses `onBackpressureBuffer(50, DROP_LATEST)` to drop the most recent item when full.
+
+### Execution
+
+Each method can be individually tested by uncommenting the corresponding line in the `main()` method. Each test is wrapped in a clearly labeled section.
+
+---
+
+## 🧪 How to Run
+
+1. Clone the repo.
+2. Import it into your favorite Java IDE.
+3. Run either `ReactiveTutorial.java` or `BackPressureTutorial.java`.
+4. Watch the console output for visual demonstration of reactive behaviors.
+
+---
+
+## 🛠 Technologies Used
+
+- Java 17+
+- [Project Reactor](https://projectreactor.io/)
+- Maven or Gradle (for dependency management)
+
+---
+
+## 📚 Learning Goals
+
+- Understand core concepts of reactive streams (`Mono` and `Flux`)
+- Learn different backpressure handling strategies
+- Gain familiarity with transformation, buffering, merging, zipping, and error handling in reactive programming
+
+---
+
+## 🧾 License
+
+This project is open-source and available under the MIT License.
 ```
 
-Or if you're using Gradle:
-
-```groovy
-implementation 'io.projectreactor:reactor-core:3.6.0'
-```
-
----
-
-## 📦 Package
-
-```java
-package com.webcodein.lrpsp;
-```
-
----
-
-## 📄 Overview
-
-The `ReactiveTutorial` class is a comprehensive demonstration of:
-
-- Creating simple Mono/Flux
-- Transforming data using `map`, `flatMap`
-- Delays and buffering
-- Merging and zipping streams
-- Logging and subscribing
-- Error handling strategies
-
----
-
-## ▶️ Running the Example
-
-To run the tutorial:
-
-```java
-public static void main(String[] args) throws InterruptedException {
-    ReactiveTutorial tutorial = new ReactiveTutorial();
-    // Method calls to demonstrate Mono and Flux features
-}
-```
-
-Some demonstrations involve `Thread.sleep(...)` to let asynchronous operations complete.
-
----
-
-## 💡 Highlights
-
-### ✅ Mono Examples
-
-```java
-tutorial.createHelloWorldMono().subscribe();
-tutorial.createHelloWorldMonoWithLogging().subscribe();
-tutorial.createNullMono().subscribe();
-tutorial.createEmptyMono().subscribe();
-tutorial.collectDelayedIntegersAsList().subscribe();
-tutorial.collectImmediateIntegersAsList().block();
-tutorial.createMapOfSquares().subscribe();
-```
-
----
-
-### 🔁 Flux Examples
-
-```java
-tutorial.getSampleStringFlux().subscribe();
-tutorial.getProgrammingLanguagesFlux().subscribe();
-tutorial.uppercaseProgrammingLanguages().subscribe();
-tutorial.uppercaseSampleStringsUsingFlatMap().subscribe();
-tutorial.skipFirstTwoSampleStrings().subscribe();
-tutorial.delayLanguagesByOneSecond().subscribe();
-tutorial.logDelayedLanguages().subscribe();
-tutorial.skipItemsInFirstTwoSeconds().subscribe();
-tutorial.skipUntilDivisibleByFive().subscribe();
-tutorial.concatIntegerRanges().subscribe();
-tutorial.mergeIntegerRanges().subscribe();
-tutorial.zipTwoDelayedRanges().subscribe();
-tutorial.bufferFullIntegerRange().subscribe();
-tutorial.bufferEveryThreeItems().subscribe();
-tutorial.bufferThreeItemsWithDelay().subscribe();
-tutorial.bufferItemsEverySecond().subscribe();
-tutorial.bufferItemsWithFourSecondDelay().subscribe();
-```
-
----
-
-### 📋 Logging and Signal Hooks
-
-```java
-tutorial.logEachSignal().subscribe();
-tutorial.logSignalTypeAndCompletion().subscribe();
-tutorial.logOnlyOnComplete().subscribe();
-tutorial.logValuesWithDoOnNext().subscribe();
-tutorial.logOnSubscribe().subscribe();
-Disposable disposable = tutorial.logOnCancel().subscribe();
-disposable.dispose(); // Trigger cancel event
-```
-
----
-
-### 🛠 Error Handling
-
-```java
-tutorial.errorWithoutRecovery().subscribe();
-tutorial.errorHandlingWithOnErrorContinue().subscribe();
-tutorial.errorHandlingWithOnErrorReturn().subscribe();
-tutorial.errorHandlingWithFallbackFlux().subscribe();
-tutorial.errorHandlingWithFallbackMono().subscribe();
-tutorial.errorHandlingWithMappedError().subscribe();
-```
-
----
-
-## 📚 Purpose
-
-This class is intended for educational use to better understand the capabilities of Project Reactor and how to leverage `Mono` and `Flux` in reactive programming with Java.
-
----
-
-## 📜 License
-
-This project is provided for learning and demonstration purposes. No explicit license attached.
+Let me know if you'd like this exported to a file or want badges, diagrams, or GIFs added!
