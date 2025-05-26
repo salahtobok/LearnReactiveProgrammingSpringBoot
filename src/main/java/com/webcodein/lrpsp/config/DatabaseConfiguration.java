@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
  * Extends {@link AbstractReactiveMongoConfiguration} to provide MongoDB connection settings.
  */
 @EnableReactiveMongoRepositories  // Enables scanning for reactive MongoDB repositories
-@Configuration                     // Marks this class as a Spring configuration class
+//@Configuration                     // Marks this class as a Spring configuration class
 public class DatabaseConfiguration extends AbstractReactiveMongoConfiguration {
 
     /**

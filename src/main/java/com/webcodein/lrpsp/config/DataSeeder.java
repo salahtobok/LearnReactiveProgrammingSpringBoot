@@ -40,7 +40,7 @@ public class DataSeeder {
             List<Order> orders = new ArrayList<>();
             Random random = new Random();
 
-            for (int i = 0; i < 100_000; i++) {
+            for (int i = 0; i < 100_0; i++) {
                 // Create a new customer with a unique name and a cyclic job title
                 Customer customer = new Customer("Customer_" + i, "Job_" + (i % 50));
                 customers.add(customer);
