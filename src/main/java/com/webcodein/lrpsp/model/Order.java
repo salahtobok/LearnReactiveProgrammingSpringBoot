@@ -55,4 +55,15 @@ public class Order {
     public void setDiscount(Double discount) {
         this.discount = discount;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id='" + id + '\'' +
+                ", customerId='" + customerId + '\'' +
+                ", total=" + total +
+                ", discount=" + discount +
+                '}';
+    }
+
 }
