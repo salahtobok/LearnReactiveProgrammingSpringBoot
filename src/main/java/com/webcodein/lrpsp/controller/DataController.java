@@ -2,6 +2,7 @@ package com.webcodein.lrpsp.controller;
 
 
 import com.webcodein.lrpsp.model.Customer;
+import com.webcodein.lrpsp.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -35,6 +36,10 @@ public class DataController {
     }
 
 
+    @PostMapping("/order/create")
+    public Mono<Order> createOrder(@RequestBody Order order){
+        return reactiveMongoTemplate.save(order);
+    }
     private Mono<Customer> getCustomerById(String customerId){
         Criteria criteria = Criteria.where("id").is(customerId);
         Query query = new Query(criteria);
