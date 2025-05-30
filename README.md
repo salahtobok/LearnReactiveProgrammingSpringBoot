@@ -1,141 +1,155 @@
-Here's a `README.md` file for both `BackPressureTutorial` and `ReactiveTutorial`, combined in a single block:
-
-```markdown
 # Project Reactor Tutorial
 
-This repository demonstrates reactive programming concepts using [Project Reactor](https://projectreactor.io/). It contains two core classes:
+This project demonstrates various features of Project Reactor using `Mono` and `Flux` reactive types, including transformations, buffering, merging, zipping, logging, and error handling.
 
-- `ReactiveTutorial`: Showcases various `Mono` and `Flux` operators.
-- `BackPressureTutorial`: Demonstrates handling backpressure in reactive streams.
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Mono Examples](#mono-examples)
+- [Flux Examples](#flux-examples)
+- [Error Handling](#error-handling)
+- [Usage](#usage)
 
----
+## Overview
 
-## 📘 Class: `ReactiveTutorial`
+The `ReactiveTutorial` class provides practical examples of reactive programming concepts using Project Reactor, a foundational library for building reactive applications on the JVM.
 
-This class provides a comprehensive demonstration of common `Mono` and `Flux` operations such as:
+## Features
 
 ### Mono Examples
-
-- `createHelloWorldMono()`  
-  Emits a simple "Hello World" string.
-
-- `createHelloWorldMonoWithLogging()`  
-  Same as above, but with `.log()` for signal tracing.
-
-- `createNullMono()`  
-  Emits an empty Mono from a `null` value.
-
-- `createEmptyMono()`  
-  Emits a deliberately empty Mono.
-
-- `collectImmediateIntegersAsList()` / `collectDelayedIntegersAsList()`  
-  Collects emitted values into a list.
-
-- `createMapOfSquares()`  
-  Emits a `Map<Integer, Integer>` of numbers and their squares.
+- Basic Mono creation
+- Logging
+- Empty/null handling
+- Collection operations
+- Map transformations
 
 ### Flux Examples
+- Basic Flux creation
+- Transformations (map, flatMap)
+- Filtering (skip, skipUntil)
+- Combining streams (concat, merge, zip)
+- Buffering strategies
+- Timing operations (delay, interval)
+- Signal logging
 
-- `getSampleStringFlux()`, `getProgrammingLanguagesFlux()`  
-  Basic Flux streams emitting strings.
+### Error Handling
+- Error recovery strategies
+- Fallback mechanisms
+- Error mapping
 
-- Transformation:
-  - `uppercaseProgrammingLanguages()`
-  - `uppercaseSampleStringsUsingFlatMap()`
+## Mono Examples
 
-- Filtering:
-  - `skipFirstTwoSampleStrings()`
-  - `skipUntilDivisibleByFive()`
+| Method | Description |
+|--------|-------------|
+| `createHelloWorldMono()` | Emits a simple "Hello World" Mono |
+| `createHelloWorldMonoWithLogging()` | Emits "Hello World" with logging |
+| `createNullMono()` | Demonstrates empty Mono from null |
+| `createEmptyMono()` | Returns an explicitly empty Mono |
+| `collectDelayedIntegersAsList()` | Collects delayed Flux into a list |
+| `collectImmediateIntegersAsList()` | Collects immediate Flux into a list |
+| `createMapOfSquares()` | Generates a map of integers and their squares |
 
-- Time-based operations:
-  - `delayLanguagesByOneSecond()`
-  - `skipItemsInFirstTwoSeconds()`
+## Flux Examples
 
-- Merging and Zipping:
-  - `concatIntegerRanges()`
-  - `mergeIntegerRanges()`
-  - `zipTwoDelayedRanges()`
+| Method | Description |
+|--------|-------------|
+| `getSampleStringFlux()` | Emits sample string data |
+| `getProgrammingLanguagesFlux()` | Emits programming languages |
+| `uppercaseProgrammingLanguages()` | Converts languages to uppercase |
+| `uppercaseSampleStringsUsingFlatMap()` | Uppercase conversion with flatMap |
+| `skipFirstTwoSampleStrings()` | Skips first two items |
+| `delayLanguagesByOneSecond()` | Delays emissions by 1 second |
+| `logDelayedLanguages()` | Logs delayed language emissions |
+| `skipItemsInFirstTwoSeconds()` | Skips items in first 2 seconds |
+| `skipUntilDivisibleByFive()` | Skips until divisible by 5 |
+| `concatIntegerRanges()` | Concatenates two Flux ranges |
+| `mergeIntegerRanges()` | Merges two ranges concurrently |
+| `zipTwoDelayedRanges()` | Zips two delayed ranges |
+| `bufferFullIntegerRange()` | Buffers all integers into single list |
+| `bufferEveryThreeItems()` | Buffers every 3 items |
+| `bufferThreeItemsWithDelay()` | Buffers with delay |
+| `bufferItemsEverySecond()` | Buffers items every second |
+| `bufferItemsWithFourSecondDelay()` | Buffers with complex timing |
+| Various logging methods | Different signal logging strategies |
 
-- Buffering:
-  - `bufferFullIntegerRange()`
-  - `bufferEveryThreeItems()`
-  - `bufferThreeItemsWithDelay()`
-  - `bufferItemsEverySecond()`
-  - `bufferItemsWithFourSecondDelay()`
+## Error Handling
 
-- Logging and Signals:
-  - `logEachSignal()`
-  - `logSignalTypeAndCompletion()`
-  - `logOnlyOnComplete()`
-  - `logValuesWithDoOnNext()`
-  - `logOnSubscribe()`
-  - `logOnCancel()`
+| Method | Description |
+|--------|-------------|
+| `errorWithoutRecovery()` | Unhandled error demonstration |
+| `errorHandlingWithOnErrorContinue()` | Continues on error |
+| `errorHandlingWithOnErrorReturn()` | Returns fallback value |
+| `errorHandlingWithFallbackFlux()` | Switches to fallback Flux |
+| `errorHandlingWithFallbackMono()` | Switches to fallback Mono |
+| `errorHandlingWithMappedError()` | Maps error to new exception |
 
-- Error Handling:
-  - `errorWithoutRecovery()`
-  - `errorHandlingWithOnErrorContinue()`
-  - `errorHandlingWithOnErrorReturn()`
-  - `errorHandlingWithFallbackFlux()`
-  - `errorHandlingWithFallbackMono()`
-  - `errorHandlingWithMappedError()`
+## Usage
 
----
+1. Clone the repository (if applicable)
+2. Ensure you have Java 8+ and Maven installed
+3. Run the main method in `ReactiveTutorial` class
+4. Observe the console output showing various reactive operations
 
-## ⚙️ Class: `BackPressureTutorial`
+Each example is clearly labeled with a separator showing which operation is being demonstrated. Many examples include timing operations, so the program may take several minutes to complete all demonstrations.
 
-This class demonstrates how to handle situations where the data publisher overwhelms the subscriber:
+Note: The examples include `Thread.sleep()` calls to allow asynchronous operations to complete, so the total runtime is approximately 2-3 minutes.
 
-### Backpressure Strategies
 
-- `controlledRateEmitter()`  
-  Emits items every 100 ms — simulates a well-behaved publisher.
 
-- `fastEmitterWithSlowProcessing()`  
-  Emits items every 1 ms, but processing takes 100 ms — simulates overflow.
 
-- `dropOverflowedItemsEmitter()`  
-  Uses `onBackpressureDrop()` to drop unprocessed items.
+# BackPressureTutorial
 
-- `bufferOverflowedItemsEmitter()`  
-  Uses `onBackpressureBuffer(50)` to buffer up to 50 items.
+This project demonstrates different backpressure handling strategies using Project Reactor's `Flux`. It showcases various publisher-subscriber scenarios and how to handle situations where the publisher produces data faster than the subscriber can consume it.
 
-- `bufferWithDropLatestStrategyEmitter()`  
-  Uses `onBackpressureBuffer(50, DROP_LATEST)` to drop the most recent item when full.
+## Overview
 
-### Execution
+The `BackPressureTutorial` class provides examples of:
+- Controlled emission to avoid backpressure
+- Uncontrolled fast emission causing overflow
+- Various backpressure handling strategies:
+    - Dropping overflowed items
+    - Buffering overflowed items
+    - Buffering with a DROP_LATEST strategy
 
-Each method can be individually tested by uncommenting the corresponding line in the `main()` method. Each test is wrapped in a clearly labeled section.
+## Methods
 
----
+### `controlledRateEmitter()`
+- Emits integers at a controlled rate (1 item every 100ms)
+- Simulates a well-behaved publisher that avoids overwhelming the subscriber
 
-## 🧪 How to Run
+### `fastEmitterWithSlowProcessing()`
+- Emits items at a very fast rate (1ms interval)
+- Each item takes 100ms to process
+- Simulates a publisher out-pacing the subscriber
 
-1. Clone the repo.
-2. Import it into your favorite Java IDE.
-3. Run either `ReactiveTutorial.java` or `BackPressureTutorial.java`.
-4. Watch the console output for visual demonstration of reactive behaviors.
+### `dropOverflowedItemsEmitter()`
+- Emits items rapidly (1ms interval)
+- Uses `onBackpressureDrop()` strategy
+- Drops items that cannot be processed in time
 
----
+### `bufferOverflowedItemsEmitter()`
+- Emits items rapidly (1ms interval)
+- Buffers up to 50 items when under pressure
+- Uses `onBackpressureBuffer()` strategy
 
-## 🛠 Technologies Used
+### `bufferWithDropLatestStrategyEmitter()`
+- Emits items rapidly (1ms interval)
+- Buffers up to 50 items
+- Drops the latest item on overflow using `DROP_LATEST` strategy
 
-- Java 17+
-- [Project Reactor](https://projectreactor.io/)
-- Maven or Gradle (for dependency management)
+## Usage
 
----
+1. Clone the repository or copy the `BackPressureTutorial` class
+2. The class contains a `main()` method with 5 test scenarios
+3. Uncomment the test you want to run (tests are commented by default to prevent simultaneous execution)
+4. Run the class
 
-## 📚 Learning Goals
-
-- Understand core concepts of reactive streams (`Mono` and `Flux`)
-- Learn different backpressure handling strategies
-- Gain familiarity with transformation, buffering, merging, zipping, and error handling in reactive programming
-
----
-
-## 🧾 License
-
-This project is open-source and available under the MIT License.
-```
-
-Let me know if you'd like this exported to a file or want badges, diagrams, or GIFs added!
+Example test execution:
+```java
+public static void main(String[] args) {
+    BackPressureTutorial tutorial = new BackPressureTutorial();
+    
+    System.out.println("\n========== Test 3: Drop Overflowed Items ==========");
+    tutorial.dropOverflowedItemsEmitter().blockLast();
+    System.out.println("========== End of Test 3 ==========\n");
+}
